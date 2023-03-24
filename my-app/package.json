@@ -1,5 +1,5 @@
 {
-  "name": "react-native-sharephotoapp",
+  "name": "my-app",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "expo": "~48.0.9",
-    "expo-app-loading": "^2.1.1",
-    "expo-font": "~11.1.1",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.4"

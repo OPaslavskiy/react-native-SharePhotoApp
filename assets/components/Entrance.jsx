@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,28 +9,52 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from "react-native";
 
+const signInState = {
+  email: "",
+  password: "",
+};
+
 export default function Entrance({ setRegisteredUser }) {
+  const [state, setState] = useState(signInState);
   const [hidePass, setHidePass] = useState(true);
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+  }, []);
 
   const toggleHidePass = () => {
     setHidePass(!hidePass);
   };
 
-  const keyboardHide = () => {
+  const submitForm = () => {
     setHidePass(true);
+    console.log(state);
     Keyboard.dismiss();
+    setState(signInState);
   };
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" && "padding"}>
       <View style={styles.entranceForm}>
-        <View>
+        <View style={{ width: dimensions }}>
           <Text style={styles.imputTitel}>Увійти</Text>
           <TextInput
             placeholder="Адреса електронної пошти..."
             style={[styles.emailImput, styles.imput]}
+            value={state.email}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, email: value }))
+            }
           />
 
           <View style={styles.passwordDiv}>
@@ -38,10 +62,20 @@ export default function Entrance({ setRegisteredUser }) {
               placeholder="Пароль"
               style={[styles.passwordImput, styles.imput]}
               secureTextEntry={hidePass}
+              value={state.password}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
             />
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.btnShow}
+              style={{
+                ...styles.btnShow,
+                transform: [
+                  { translateX: dimensions - 105 },
+                  { translateY: 21 },
+                ],
+              }}
               onPress={toggleHidePass}
             >
               <Text style={[styles.btnShowTitle, styles.text]}>
@@ -50,7 +84,11 @@ export default function Entrance({ setRegisteredUser }) {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.btn}
+            onPress={submitForm}
+          >
             <Text style={[styles.btnTitle, styles.text]}>Увійти</Text>
           </TouchableOpacity>
           <Text
@@ -69,9 +107,9 @@ const styles = StyleSheet.create({
   entranceForm: {
     backgroundColor: "#fff",
     height: 489,
-    paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    alignItems: "center",
   },
 
   avatarDiv: {
@@ -95,18 +133,17 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  btnPlus: {
-    width: 25,
-    height: 25,
-    position: "absolute",
-    // borderRadius: "50%",
-    padding: 0,
-    borderWidth: 1,
-    borderColor: "#FF6C00",
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    transform: [{ translateX: 60 }, { translateY: -14 }],
-  },
+  // btnPlus: {
+  //   width: 25,
+  //   height: 25,
+  //   position: "absolute",
+  //   padding: 0,
+  //   borderWidth: 1,
+  //   borderColor: "#FF6C00",
+  //   backgroundColor: "#fff",
+  //   justifyContent: "center",
+  //   transform: [{ translateX: 60 }, { translateY: -14 }],
+  // },
 
   btnPlusTitel: {
     color: "#FF6C00",
@@ -115,7 +152,7 @@ const styles = StyleSheet.create({
   },
 
   imputTitel: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,
@@ -132,10 +169,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     height: 50,
     borderRadius: 8,
-    marginHorizontal: 16,
     color: "black",
     padding: 16,
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
 
   loginImput: {
@@ -159,7 +196,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     position: "absolute",
-    transform: [{ translateX: 250 }, { translateY: 21 }],
   },
 
   btnShowTitle: {
@@ -176,7 +212,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,

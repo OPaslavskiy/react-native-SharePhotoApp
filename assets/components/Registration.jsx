@@ -1,6 +1,5 @@
 import React from "react";
-import { useState } from "react";
-// import { useFonts } from "expo-font";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -11,29 +10,45 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
+
+const registrationState = {
+  login: "",
+  email: "",
+  password: "",
+};
 
 export default function Registration({ setRegisteredUser }) {
+  const [state, setState] = useState(registrationState);
   const [hidePass, setHidePass] = useState(true);
   const [availablePhoto, setAvailablePhoto] = useState(false);
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+  }, []);
 
   const toggleHidePass = () => {
     setHidePass(!hidePass);
   };
 
   const toggleAvailablePhoto = () => {
-    console.log("123");
     setAvailablePhoto(!availablePhoto);
   };
 
-  const keyboardHide = () => {
+  const submitForm = () => {
     setHidePass(true);
     Keyboard.dismiss();
+    setState(registrationState);
   };
-
-  // const [fontsLoaded] = useFonts({
-  //   IcoMoon: require("../icon/icomoon.ttf"),
-  // });
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" && "padding"}>
@@ -45,21 +60,35 @@ export default function Registration({ setRegisteredUser }) {
           /> */}
           <TouchableOpacity
             activeOpacity={0.8}
-            style={styles.btnPlus}
+            style={styles.btnForAva}
             onPress={toggleAvailablePhoto}
           >
-            <Text style={[styles.btnPlusTitel]}>+</Text>
+            <Text>
+              {availablePhoto ? (
+                <Feather name="x-circle" size={25} color="#E8E8E8" />
+              ) : (
+                <Feather name="plus-circle" size={25} color="#FF6C00" />
+              )}
+            </Text>
           </TouchableOpacity>
         </View>
-        <View>
+        <View style={{ width: dimensions }}>
           <Text style={styles.imputTitel}>Реєстрація</Text>
           <TextInput
             placeholder="Логін"
             style={[styles.loginImput, styles.imput]}
+            value={state.login}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, login: value }))
+            }
           />
           <TextInput
             placeholder="Адреса електронної пошти"
             style={[styles.emailImput, styles.imput]}
+            value={state.email}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, email: value }))
+            }
           />
 
           <View style={styles.passwordDiv}>
@@ -67,10 +96,20 @@ export default function Registration({ setRegisteredUser }) {
               placeholder="Пароль"
               style={[styles.passwordImput, styles.imput]}
               secureTextEntry={hidePass}
+              value={state.password}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
             />
             <TouchableOpacity
               activeOpacity={0.8}
-              style={styles.btnShow}
+              style={{
+                ...styles.btnShow,
+                transform: [
+                  { translateX: dimensions - 105 },
+                  { translateY: 21 },
+                ],
+              }}
               onPress={toggleHidePass}
             >
               <Text style={[styles.btnShowTitle, styles.text]}>
@@ -82,7 +121,7 @@ export default function Registration({ setRegisteredUser }) {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btn}
-            onPress={keyboardHide}
+            onPress={submitForm}
           >
             <Text style={[styles.btnTitle, styles.text]}>Зареєструватися</Text>
           </TouchableOpacity>
@@ -102,9 +141,9 @@ const styles = StyleSheet.create({
   registerForm: {
     backgroundColor: "#fff",
     height: 549,
-    paddingHorizontal: 16,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    alignItems: "center",
   },
 
   avatarDiv: {
@@ -128,27 +167,13 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  btnPlus: {
-    width: 25,
-    height: 25,
+  btnForAva: {
     position: "absolute",
-    // borderRadius: "50%",
-    padding: 0,
-    borderWidth: 1,
-    borderColor: "#FF6C00",
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    transform: [{ translateX: 60 }, { translateY: -14 }],
-  },
-
-  btnPlusTitel: {
-    color: "#FF6C00",
-    fontSize: 16,
-    textAlign: "center",
+    transform: [{ translateX: 59 }, { translateY: -17 }],
   },
 
   imputTitel: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,
@@ -165,10 +190,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     height: 50,
     borderRadius: 8,
-    marginHorizontal: 16,
     color: "black",
     padding: 16,
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
 
   loginImput: {
@@ -192,7 +217,6 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     position: "absolute",
-    transform: [{ translateX: 250 }, { translateY: 21 }],
   },
 
   btnShowTitle: {
@@ -209,12 +233,11 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
-
     textAlign: "center",
     justifyContent: "center",
   },

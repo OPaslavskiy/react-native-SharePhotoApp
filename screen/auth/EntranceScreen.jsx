@@ -6,6 +6,8 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -17,7 +19,7 @@ const signInState = {
   password: "",
 };
 
-export default function Entrance({ setRegisteredUser }) {
+export default function EntranceScreen({ navigation }) {
   const [state, setState] = useState(signInState);
   const [hidePass, setHidePass] = useState(true);
   const [dimensions, setDimensions] = useState(
@@ -28,6 +30,7 @@ export default function Entrance({ setRegisteredUser }) {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
       setDimensions(width);
+      console.log(`123`);
     };
     Dimensions.addEventListener("change", onChange);
   }, []);
@@ -37,6 +40,7 @@ export default function Entrance({ setRegisteredUser }) {
   };
 
   const submitForm = () => {
+    console.log(`123`);
     setHidePass(true);
     console.log(state);
     Keyboard.dismiss();
@@ -44,66 +48,89 @@ export default function Entrance({ setRegisteredUser }) {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" && "padding"}>
-      <View style={styles.entranceForm}>
-        <View style={{ width: dimensions }}>
-          <Text style={styles.imputTitel}>Увійти</Text>
-          <TextInput
-            placeholder="Адреса електронної пошти..."
-            style={[styles.emailImput, styles.imput]}
-            value={state.email}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, email: value }))
-            }
-          />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground
+          source={require("../../assets/images/background.jpg")}
+          style={styles.image}
+        >
+          <KeyboardAvoidingView behavior={Platform.OS === "ios" && "padding"}>
+            <View style={styles.entranceForm}>
+              <View style={{ width: dimensions }}>
+                <Text style={styles.imputTitel}>Увійти</Text>
+                <TextInput
+                  placeholder="Адреса електронної пошти..."
+                  style={[styles.emailImput, styles.imput]}
+                  value={state.email}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
+                />
 
-          <View style={styles.passwordDiv}>
-            <TextInput
-              placeholder="Пароль"
-              style={[styles.passwordImput, styles.imput]}
-              secureTextEntry={hidePass}
-              value={state.password}
-              onChangeText={(value) =>
-                setState((prevState) => ({ ...prevState, password: value }))
-              }
-            />
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={{
-                ...styles.btnShow,
-                transform: [
-                  { translateX: dimensions - 105 },
-                  { translateY: 21 },
-                ],
-              }}
-              onPress={toggleHidePass}
-            >
-              <Text style={[styles.btnShowTitle, styles.text]}>
-                {hidePass ? "Показати" : "Приховати"}
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <View style={styles.passwordDiv}>
+                  <TextInput
+                    placeholder="Пароль"
+                    style={[styles.passwordImput, styles.imput]}
+                    secureTextEntry={hidePass}
+                    value={state.password}
+                    onChangeText={(value) =>
+                      setState((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                  />
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{
+                      ...styles.btnShow,
+                      transform: [
+                        { translateX: dimensions - 105 },
+                        { translateY: 21 },
+                      ],
+                    }}
+                    onPress={toggleHidePass}
+                  >
+                    <Text style={[styles.btnShowTitle, styles.text]}>
+                      {hidePass ? "Показати" : "Приховати"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.btn}
-            onPress={submitForm}
-          >
-            <Text style={[styles.btnTitle, styles.text]}>Увійти</Text>
-          </TouchableOpacity>
-          <Text
-            style={[styles.accountAlready, styles.text]}
-            onPress={() => setRegisteredUser()}
-          >
-            Немає акаунта? Зареєструватися
-          </Text>
-        </View>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.btn}
+                  onPress={submitForm}
+                >
+                  <Text style={[styles.btnTitle, styles.text]}>Увійти</Text>
+                </TouchableOpacity>
+                <Text
+                  style={[styles.accountAlready, styles.text]}
+                  onPress={() => navigation.navigate("Registration")}
+                >
+                  Немає акаунта? Зареєструватися
+                </Text>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
-    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
+
   entranceForm: {
     backgroundColor: "#fff",
     height: 489,

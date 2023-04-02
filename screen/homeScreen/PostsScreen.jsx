@@ -12,7 +12,7 @@ export default function PostsScreen() {
             <Text style={styles.titel}>Публікації</Text>
           </View>
           <View style={styles.hederIcon}>
-            <Feather name="log-out" size={20} color="#BDBDBD" />
+            <Feather name="log-out" size={24} color="#BDBDBD" />
           </View>
         </View>
       </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
 
   titel: {
-    fontFamily: "Ronoto-Bold",
+    fontFamily: "Roboto-Bold",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 17,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   },
 
   login: {
-    fontFamily: "Ronoto-Bold",
+    fontFamily: "Roboto-Bold",
     fontStyle: "normal",
     fontWeight: 700,
     fontSize: 13,

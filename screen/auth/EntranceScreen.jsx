@@ -160,18 +160,6 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  // btnPlus: {
-  //   width: 25,
-  //   height: 25,
-  //   position: "absolute",
-  //   padding: 0,
-  //   borderWidth: 1,
-  //   borderColor: "#FF6C00",
-  //   backgroundColor: "#fff",
-  //   justifyContent: "center",
-  //   transform: [{ translateX: 60 }, { translateY: -14 }],
-  // },
-
   btnPlusTitel: {
     color: "#FF6C00",
     fontSize: 16,

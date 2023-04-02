@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 
 import {
   AntDesign,
@@ -35,13 +42,16 @@ export default function CreatePostsScreen({ navigation }) {
         <View style={styles.photosInfo}>
           <Text style={styles.text}>Завантажте фото</Text>
           <View style={[styles.photosNameTxt, styles.line]}>
-            <Text style={styles.text}>Назва...</Text>
+            <TextInput style={styles.text} placeholder="Назва фото..." />
           </View>
           <View style={[styles.locationPhotoTxt, styles.line]}>
             <View style={styles.iconLocation}>
               <EvilIcons name="location" size={24} color="#BDBDBD" />
             </View>
-            <Text style={[styles.text, styles.textLocation]}>Локація...</Text>
+            <TextInput
+              style={[styles.text, styles.textLocation]}
+              placeholder="Локація..."
+            />
           </View>
         </View>
       </View>

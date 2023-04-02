@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 
 export default function PostsScreen() {
   return (
@@ -24,6 +25,33 @@ export default function PostsScreen() {
         <View tyle={styles.aboutUser}>
           <Text style={styles.login}>Oleh Paslavskyi</Text>
           <Text style={styles.email}>ejlfkeifj@gmail.com</Text>
+        </View>
+      </View>
+      <View style={styles.mainPhotoContainer}>
+        <View style={styles.uploadedPhotoDiv}>
+          <Image
+            style={styles.uploadedPhoto}
+            source={require("../../assets/images/mountain-g20a.jpg")}
+          />
+        </View>
+
+        <Text style={styles.photosName}>Гора</Text>
+        <View style={styles.statusLine}>
+          <View style={styles.rating}>
+            <View style={styles.comments}>
+              <Text style={styles.commentsIcon}>
+                <EvilIcons name="comment" size={28} color="#FF6C00" />
+              </Text>
+              <Text style={styles.commentsNumber}>8</Text>
+            </View>
+          </View>
+
+          <View style={styles.location}>
+            <Text style={styles.iconLocation}>
+              <EvilIcons name="location" size={28} color="#BDBDBD" />
+            </Text>
+            <Text style={styles.textLocation}>Japan</Text>
+          </View>
         </View>
       </View>
     </View>
@@ -101,5 +129,71 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 13,
     color: "#212121cc",
+  },
+
+  mainPhotoContainer: {
+    marginHorizontal: 16,
+    marginTop: 33,
+  },
+
+  uploadedPhotoDiv: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: 240,
+    textAlign: "center",
+    borderRadius: 8,
+    backgroundColor: "#E8E8E8",
+  },
+
+  uploadedPhoto: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderRadius: 8,
+  },
+
+  photosName: {
+    fontFamily: "Roboto-Regular",
+    fontWeight: 500,
+    fontStyle: "normal",
+    fontSize: 16,
+    lineHeight: 19,
+    marginTop: 8,
+  },
+
+  statusLine: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: 11,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  rating: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  likes: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  comments: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 32,
+  },
+
+  location: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

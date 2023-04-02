@@ -48,12 +48,16 @@ export default function CreatePostsScreen() {
                   />
                 </View>
               </View>
-              <Text style={styles.login}>Oleh Paslavskiy</Text>
+              <View>
+                <Text style={styles.login}>Oleh Paslavskiy</Text>
+              </View>
               <View style={styles.mainPhotoContainer}>
-                <Image
-                  style={styles.uploadedPhoto}
-                  source={require("../../assets/images/mountain-g20a.jpg")}
-                />
+                <View style={styles.uploadedPhotoDiv}>
+                  <Image
+                    style={styles.uploadedPhoto}
+                    source={require("../../assets/images/mountain-g20a.jpg")}
+                  />
+                </View>
                 <Text style={styles.photosName}>Гора</Text>
                 <View style={styles.statusLine}>
                   <View style={styles.rating}>
@@ -101,10 +105,12 @@ const styles = StyleSheet.create({
   registerForm: {
     backgroundColor: "#fff",
     height: "100%",
+    width: "100%",
     marginTop: 147,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
+    width: "100%",
   },
 
   avatarDiv: {
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   login: {
-    fontFamily: "Roboto",
+    fontFamily: "Roboto-Regular",
     fontWeight: 500,
     fontStyle: "normal",
     fontSize: 30,
@@ -155,20 +161,33 @@ const styles = StyleSheet.create({
   mainPhotoContainer: {
     marginHorizontal: 16,
     marginTop: 33,
+    width: "100%",
+  },
+
+  uploadedPhotoDiv: {
+    marginHorizontal: 16,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: 240,
+    textAlign: "center",
+    borderRadius: 8,
+    backgroundColor: "#E8E8E8",
   },
 
   uploadedPhoto: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
     borderRadius: 8,
-    marginBottom: 8,
-    backgroundColor: "#E8E8E8",
-    height: 240,
-    width: 343,
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
   },
 
   photosName: {
-    fontFamily: "Roboto",
+    marginHorizontal: 16,
+    fontFamily: "Roboto-Regular",
     fontWeight: 500,
     fontStyle: "normal",
     fontSize: 16,
@@ -177,6 +196,7 @@ const styles = StyleSheet.create({
   },
 
   statusLine: {
+    marginHorizontal: 16,
     display: "flex",
     flexDirection: "row",
     marginTop: 11,

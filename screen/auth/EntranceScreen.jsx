@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: -60,
     borderRadius: 18,
-    marginLeft: "auto",
+    marginLefto: "auto",
     marginRight: "auto",
     position: "relative",
     backgroundColor: "F6F6F6",

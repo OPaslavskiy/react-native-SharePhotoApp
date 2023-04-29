@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Camera } from "expo-camera";
+import React, { useState, useEffect } from "react";
+import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import {
   View,
@@ -18,13 +18,27 @@ import {
 } from "@expo/vector-icons";
 
 export default function CreatePostsScreen({ navigation }) {
-  const [snap, setSnap] = useState(null);
-  const [photo, setPhoto] = useState("");
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [picture, setPicture] = useState(null);
 
-  const takePhoto = async () => {
-    const photo = await snap.takePictureAsync();
-    setPhoto(photo.uri);
-  };
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
@@ -44,14 +58,36 @@ export default function CreatePostsScreen({ navigation }) {
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.uploadPhoto}>
-          <Camera style={styles.camera}>
-            <View style={styles.takePhoto}>
+          <Camera style={styles.camera} type={type} ref={setCameraRef}>
+            <View style={styles.takePhotoContainer}>
               <Image
-                source={{ uri: photo }}
-                style={{ height: 100, width: 100 }}
+                source={{ uri: picture }}
+                style={{ width: 90, height: 60 }}
               />
             </View>
-            <TouchableOpacity onPress={takePhoto} ref={setSnap}>
+            {/* <TouchableOpacity
+              style={styles.flipContainer}
+              onPress={() => {
+                setType(
+                  type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+              }}
+            >
+              <Text style={{ fontSize: 12, marginBottom: 5, color: "#fff" }}>
+                Flip
+              </Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              onPress={async () => {
+                if (cameraRef) {
+                  const { uri } = await cameraRef.takePictureAsync();
+                  await MediaLibrary.createAssetAsync(uri);
+                  setPicture(uri);
+                }
+              }}
+            >
               <View style={styles.cameraDiv}>
                 <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
               </View>
@@ -110,6 +146,16 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
 
+  flipContainer: {
+    position: "relative",
+    width: 30,
+    height: 30,
+    // flex: 0.1,
+    alignSelf: "flex-end",
+    justifyContent: "center",
+    marginRight: 5,
+  },
+
   titel: {
     fontFamily: "Roboto-Bold",
     fontStyle: "normal",
@@ -141,7 +187,9 @@ const styles = StyleSheet.create({
   },
 
   camera: {
+    position: "absolute",
     height: 240,
+    width: "100%",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
@@ -159,8 +207,8 @@ const styles = StyleSheet.create({
 
   takePhoto: {
     position: "absolute",
-    top: 0,
-    left: 0,
+    // marginTop: 20,
+    // left: 0,
     borderColor: "#fff",
     borderWidth: 1,
     height: 100,
@@ -184,6 +232,14 @@ const styles = StyleSheet.create({
 
   photosNameTxt: {
     marginTop: 48,
+  },
+
+  takePhotoContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    borderColor: "#fff",
+    borderWidth: 1,
   },
 
   locationPhotoTxt: {

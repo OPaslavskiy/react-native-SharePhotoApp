@@ -59,13 +59,15 @@ export default function CreatePostsScreen({ navigation }) {
       <View style={styles.mainContainer}>
         <View style={styles.uploadPhoto}>
           <Camera style={styles.camera} type={type} ref={setCameraRef}>
-            <View style={styles.takePhotoContainer}>
-              <Image
-                source={{ uri: picture }}
-                style={{ width: 90, height: 60 }}
-              />
-            </View>
-            {/* <TouchableOpacity
+            {picture && (
+              <View style={styles.takePhotoContainer}>
+                <Image
+                  source={{ uri: picture }}
+                  style={{ width: 80, height: 55 }}
+                />
+              </View>
+            )}
+            <TouchableOpacity
               style={styles.flipContainer}
               onPress={() => {
                 setType(
@@ -78,7 +80,7 @@ export default function CreatePostsScreen({ navigation }) {
               <Text style={{ fontSize: 12, marginBottom: 5, color: "#fff" }}>
                 Flip
               </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
                 if (cameraRef) {
@@ -147,13 +149,16 @@ const styles = StyleSheet.create({
   },
 
   flipContainer: {
-    position: "relative",
-    width: 30,
-    height: 30,
-    // flex: 0.1,
-    alignSelf: "flex-end",
+    position: "absolute",
+    width: 40,
+    height: 40,
+    top: 5,
+    right: 5,
+    borderColor: "#ffffff60",
+    borderWidth: 1,
+    alignItems: "center",
     justifyContent: "center",
-    marginRight: 5,
+    borderRadius: "50%",
   },
 
   titel: {
@@ -187,9 +192,7 @@ const styles = StyleSheet.create({
   },
 
   camera: {
-    position: "absolute",
     height: 240,
-    width: "100%",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
@@ -205,16 +208,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 
-  takePhoto: {
-    position: "absolute",
-    // marginTop: 20,
-    // left: 0,
-    borderColor: "#fff",
-    borderWidth: 1,
-    height: 100,
-    width: 100,
-  },
-
   text: {
     fontFamily: "Roboto-Bold",
     fontWeight: 400,
@@ -224,7 +217,6 @@ const styles = StyleSheet.create({
   },
 
   line: {
-    // backgroundColor: "grey",
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
@@ -236,10 +228,8 @@ const styles = StyleSheet.create({
 
   takePhotoContainer: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    borderColor: "#fff",
-    borderWidth: 1,
+    top: 180,
+    left: 5,
   },
 
   locationPhotoTxt: {

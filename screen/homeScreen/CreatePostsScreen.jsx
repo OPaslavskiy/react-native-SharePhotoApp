@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 import {
   View,
   Text,
@@ -16,6 +18,13 @@ import {
 } from "@expo/vector-icons";
 
 export default function CreatePostsScreen({ navigation }) {
+  const [snap, setSnap] = useState(null);
+  const [photo, setPhoto] = useState("");
+
+  const takePhoto = async () => {
+    const photo = await snap.takePictureAsync();
+    setPhoto(photo.uri);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.heder}>
@@ -35,9 +44,19 @@ export default function CreatePostsScreen({ navigation }) {
       </View>
       <View style={styles.mainContainer}>
         <View style={styles.uploadPhoto}>
-          <View style={styles.camera}>
-            <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-          </View>
+          <Camera style={styles.camera}>
+            <View style={styles.takePhoto}>
+              <Image
+                source={{ uri: photo }}
+                style={{ height: 100, width: 100 }}
+              />
+            </View>
+            <TouchableOpacity onPress={takePhoto} ref={setSnap}>
+              <View style={styles.cameraDiv}>
+                <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+              </View>
+            </TouchableOpacity>
+          </Camera>
         </View>
         <View style={styles.photosInfo}>
           <Text style={styles.text}>Завантажте фото</Text>
@@ -119,18 +138,33 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor: "#E8E8E8",
     height: 240,
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   camera: {
+    height: 240,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  cameraDiv: {
     display: "flex",
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff30",
     width: 60,
     height: 60,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
+  },
+
+  takePhoto: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    borderColor: "#fff",
+    borderWidth: 1,
+    height: 100,
+    width: 100,
   },
 
   text: {

@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
   },
 
   heder: {
-    // backgroundColor: "grey",
     width: "100%",
     borderBottomWidth: 2,
     borderBottomColor: "#E8E8E8",
